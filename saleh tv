@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saleh TV</title>
+    <!-- استدعاء خط تاريخي فخم (Cinzel) للعنوان -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --accent-gold: #d4af37; 
+            --bg: #0a0a0a; 
+        }
+        body { 
+            background-color: var(--bg); 
+            background-image: url('https://i.ibb.co/5gg3JfVt/020f249289e7b1a14246867c2756d297.webp');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: white; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 0px; 
+            height: 70px; 
+            background: url('https://i.ibb.co/Xr6kkKvX/Screenshot.webp') no-repeat center center;
+            background-size: 100% 100%; 
+            border-bottom: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* تصميم خط جوهري تاريخي لعنوان الشريط */
+        header h1 {
+            display: block; 
+            font-family: 'Cinzel', serif;
+            font-size: 26px;
+            color: #ffdf73;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 2px 2px 0px #332400, 4px 4px 5px rgba(0,0,0,0.8), 0 0 15px #d4af37, 0 0 20px #d4af37;
+            z-index: 2;
+        }
+        
+        .page { display: none; padding: 20px; }
+        .active { display: block; }
+        
+        .top-actions-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px; 
+            margin-bottom: 25px; 
+            padding: 0 5px;
+        }
+        
+        .telegram-btn {
+            width: 45px;
+            height: 45px;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            transition: transform 0.2s;
+        }
+        .telegram-btn img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .player-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--accent-gold);
+            padding: 6px 12px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
+        .player-btn img {
+            width: 25px;
+            height: 25px;
+            margin-left: 8px;
+            border-radius: 5px;
+        }
+        .player-btn span {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: var(--accent-gold);
+        }
+
+        .section-card { 
+            position: relative;
+            height: 160px; margin-bottom: 20px; border-radius: 15px; 
+            cursor: pointer; border: 2px solid var(--accent-gold); 
+            overflow: hidden; background-position: center;
+            background-repeat: no-repeat; background-size: 100% 100%;
+            display: flex; align-items: center; justify-content: center; 
+        }
+        .section-card::before, .card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); z-index: 1;
+        }
+        .section-text { position: relative; z-index: 2; text-align: center; }
+        .main-title-en { font-size: 1.6em; color: var(--accent-gold); font-weight: bold; text-shadow: 2px 2px 8px #000; display: block; }
+        .main-title-ar { font-size: 1.1em; color: #fff; margin-top: 5px; font-weight: bold; text-shadow: 2px 2px 8px #000; display: block; }
+
+        .card { 
+            position: relative; height: 120px; margin-bottom: 15px; border-radius: 12px; 
+            cursor: pointer; border: 1px solid var(--accent-gold); overflow: hidden;
+            background-size: 100% 100%; background-position: center; display: flex; align-items: flex-end; 
+            text-decoration: none;
+        }
+        .card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%); z-index: 1;
+        }
+        .card-text { position: relative; z-index: 2; padding: 15px; width: 100%; }
+        .name-en { font-size: 1.25em; color: var(--accent-gold); font-weight: bold; text-shadow: 2px 2px 6px #000; display: block; }
+        .name-ar { font-size: 1.1em; color: #fff; margin-top: 3px; font-weight: bold; text-shadow: 2px 2px 6px #000; display: block; }
+
+        .tv-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .tv-grid-card {
+            background: rgba(18, 24, 36, 0.9);
+            border: 2px solid var(--accent-gold);
+            border-radius: 15px;
+            padding: 8px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+        }
+        .tv-grid-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            background-size: 100% 100%;
+            background-position: center;
+            border: 1px solid var(--accent-gold);
+            margin-bottom: 6px;
+        }
+        .tv-grid-text {
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px #000;
+        }
+        .tv-grid-text span {
+            color: var(--accent-gold);
+            display: block;
+            font-size: 0.85em;
+        }
+
+        .series-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            transform: scale(0.90);
+        }
+        .series-card .tv-grid-img {
+            background-size: 100% 100% !important;
+            aspect-ratio: 3 / 4;
+            border-radius: 12px;
+            border: 2px solid var(--accent-gold);
+            margin-bottom: 8px;
+        }
+        .series-card .tv-grid-text {
+            color: white !important;
+            font-size: 1em !important;
+            text-shadow: 3px 3px 5px #000, -2px -2px 5px #000, 0px 0px 10px #000, 0px 0px 15px #000 !important; 
+        }
+
+        .custom-tv-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .custom-tv-card {
+            position: relative;
+            height: 120px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid var(--accent-gold);
+            overflow: hidden;
+            background-size: 100% 100%;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+        }
+        .custom-tv-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+        .custom-tv-text {
+            position: relative;
+            z-index: 2;
+            padding: 8px;
+            width: 100%;
+            text-align: right;
+        }
+        .custom-tv-en {
+            font-size: 0.85em;
+            color: var(--accent-gold);
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            display: block;
+        }
+        .custom-tv-ar {
+            font-size: 0.7em;
+            color: #fff;
+            margin-top: 2px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            display: block;
+        }
+
+        .back-btn { color: var(--accent-gold); margin-bottom: 20px; cursor: pointer; font-size: 1.2em; display: inline-block; font-weight: bold; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 8px; border: 1px solid var(--accent-gold); }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 35px; 
+        }
+        .search-bar {
+            width: 90%;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--accent-gold);
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            font-size: 1.1em;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            font-family: inherit;
+        }
+        .search-bar::placeholder {
+            color: #ccc;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header><h1>Saleh TV</h1></header>
+
+<!-- ================= الواجهة الرئيسية ================= -->
+<div id="home-page" class="page active" style="padding: 20px;">
+    
+    <div class="top-actions-container">
+        <!-- جهة اليمين: قناة التليكرام -->
+        <a href="tg://resolve?domain=hw7s8" class="telegram-btn">
+            <img src="https://i.ibb.co/JwYQMBhk/495b7f5a2a3a0cdb7cbe85ca8b67d80d.webp" alt="قناة تليكرام">
+        </a>
+
+        <!-- جهة اليسار: زر تحميل مشغل التطبيق -->
+        <a href="https://play.google.com/store/apps/details?id=com.arix.player" target="_blank" class="player-btn">
+            <img src="https://i.ibb.co/0VnTm0js/Screenshot.webp" alt="أيقونة المشغل">
+            <span>حمل مشغل التطبيق</span>
+        </a>
+    </div>
+
+    <!-- زر البحث -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="بحث...">
+    </div>
+
+    <!-- الأقسام الرئيسية -->
+    <div class="section-card" style="background-image: url('https://i.ibb.co/d0ptQSqh/4b0ada67a06ad8c2af911dad6d6eab69.webp');" onclick="navigateTo('sports-menu')">
+        <div class="section-text"><span class="main-title-en">SPORTS</span><span class="main-title-ar">قسم الرياضة</span></div>
+    </div>
+    
+    <div class="section-card" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');" onclick="navigateTo('adventure-menu')">
+        <div class="section-text">
+            <span class="main-title-ar" style="display: inline-block; border: 2px solid var(--accent-gold); border-radius: 12px; padding: 10px 26px; background: rgba(0,0,0,0.55); font-size: 1.3em; margin-top: 0;">قسم استكشافات ومغامرات</span>
+        </div>
+    </div>
+</div>
+
+<!-- ================= قائمة الرياضة الرئيسية ================= -->
+<div id="sports-menu" class="page">
+    <div class="back-btn" onclick="navigateTo('home-page')">← العودة للرئيسية</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث في الرياضة..."></div>
+    
+    <div class="card" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');" onclick="navigateTo('bein-page')"><div class="card-text"><span class="name-en">Bein Sport</span><span class="name-ar">بي إن سبورت</span></div></div>
+    <div class="card" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');" onclick="navigateTo('alwan-page')"><div class="card-text"><span class="name-en">Alwan Sport</span><span class="name-ar">ألوان سبورت</span></div></div>
+    <div class="card" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');" onclick="navigateTo('alkass-page')"><div class="card-text"><span class="name-en">Al Kass</span><span class="name-ar">قنوات الكأس</span></div></div>
+    <div class="card" style="background-image: url('https://i.ibb.co/xSTnhcHL/1784364616583.webp');" onclick="navigateTo('thamanya-page')"><div class="card-text"><span class="name-en">Thamanya Sport</span><span class="name-ar">ثمانية الرياضية</span></div></div>
+</div>
+
+<!-- ================= قنوات بين سبورت ================= -->
+<div id="bein-page" class="page">
+    <div class="back-btn" onclick="navigateTo('sports-menu')">← رجوع</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث..."></div>
+    <div class="main-title-en" style="margin-bottom: 10px; text-align: center; text-shadow: 2px 2px 6px #000;">BEIN SPORT CHANNELS</div>
+    
+    <div class="tv-grid">
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzjeEQzOleGAT9mywsjCKSOsfUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 1</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzAAoDI1+gJPjYScwJ8FuPXMfUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 2</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzU4msVX3M5+gkaBkBdPfXocfUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 3</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzFIZMNpDzJPVk9VqnRr9uRsfUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 4</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzo6s4+KpZNfb19fpPw6/Tw8fUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 5</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMz+EddrYkrvlg5Tkt1m6BN18fUfObrcvmaX7y7OXiB6EqnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 6</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMz3tNVFfDHWdIt8P28Fn47IhTDcF8d+OGW8oCNPxsDWbvcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 7</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzfPIG5kAUuwk6M4jzupCGUJWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>HD 8</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzmDc3KtaBNOYB7ZV4Hp44X5WVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 1</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzEfmwBQhmUAHue1uWgMN1npWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 2</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzEMrPnanwKo+RqBlSk45+DJWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 3</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzV0nabXI2GoHeO+2rzBm9mpWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 4</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzFY9GttLcbvPBadIun2WPapWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 5</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMz0b1OOVY5GL1Wiju5HljgppWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 6</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzqMDV0cOc3Fu0c1e9gaM4tpWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 7</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTjfuzAVqUOQ4DW9OfAeLVk553yV+fNVkEflIkNIwqykcEriZOL1Y4+KlbcjV5AX1ozeXyeZMu8s94MHdFW4UfMzzXHwDxiF/j3BgzfDJ+1kppWVl1Hu+5IdQR+xpiA79dz0HBT077fwZiliqKXv4M/uM7cLtMxlYUtVclyl01EOMcc/y/erKc/LvxwG61yL9to7z6HFKKbmFBUjA4Z314Af#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Cs2mZV1P/3cad4b413b8e806fe858dee875f558c3.webp');"></div>
+            <div class="tv-grid-text">بين سبورت <span>SD 8</span></div>
+        </a>
+    </div>
+</div>
+
+<!-- ================= قنوات ألوان سبورت ================= -->
+<div id="alwan-page" class="page">
+    <div class="back-btn" onclick="navigateTo('sports-menu')">← رجوع</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث..."></div>
+    <div class="main-title-en" style="margin-bottom: 10px; text-align: center; text-shadow: 2px 2px 6px #000;">ALWAN SPORT</div>
+    <div class="tv-grid">
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JThe9twNxEbKtlq6YzY9VEaR4J4/9U3mcBCV6DLWDg2PVXw3Rdzvdt0sJQmaKsLdvMrwJT5ebBAIAYccaQxlI6Rp7M0qIPHYnkzz3rBKxMwh96cQNj/bViAHXsuX+LsYJb5bb+P6Er4h8cXhUec6lRwMMl3mztRuQQG6NXsfq3rLbS4AItco03f+8aaErcOO13I=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>1</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JThe9twNxEbKtlq6YzY9VEaR4J4/9U3mcBCV6DLWDg2PVXw3Rdzvdt0sJQmaKsLdvMrwJT5ebBAIAYccaQxlI6Rp4QR6wTTJ6PO6DXIyYOrkOqcQNj/bViAHXsuX+LsYJb5bb+P6Er4h8cXhUec6lRwMMl3mztRuQQG6NXsfq3rLbS4AItco03f+8aaErcOO13I=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>2</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JThe9twNxEbKtlq6YzY9VEaRfPlvb2pBMGTndEiSnQLrg1PAyDG+WLLKHZFct0+RtR2SomSckC/9sO45oW2Xd2YVlS6qSujhHLcpvn0otD/NCA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>3</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JThe9twNxEbKtlq6YzY9VEaRcV8bKb5Cmw7hmh2VBl7XTpvVIaseQT+dqlFumAtwJlj2qvvAqHKcH+5lGKI0L/srO6KPAjkweSrPuqxFTr3fIJI70wN7Jjxu3y7Wqu5v+R3KmIpu6cSJrJOX9G6K+IQ/NhW0JgEatYJtT4ZfWmHrZRh61QV2stnZApO8vDEvfoPYB3FTqB5SgxZVsA5aQsTmT/leMxa0J7tVy6i528q6wQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>4</span></div>
+        </a>
+        <a href="intent://video?json=C5EClmCeBchpFh7rKk8EPGfs9kZWBetZzk1QCBReBS1oRM/X6FIBZ4AejFLThHTFkBDsRCvPWYdKhsOHHAEXHE2fO654s0PRygf3bpb8p5IHU+hryRmVqD5ez/Jl8Ga35ebfJuB1nTxgWtW7wVo2gwNSd7wjKUIXsg3I5BhjwDPYe+VUanjTCT/NitPoVFB3ezNI0Qtv4eFRWKWwFcewbrLxGPZUfNrgSCRluc1vSN0=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>5</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JThe9twNxEbKtlq6YzY9VEaRfPlvb2pBMGTndEiSnQLrg1PAyDG+WLLKHZFct0+RtR2SomSckC/9sO45oW2Xd2YVlS6qSujhHLcpvn0otD/NCA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/KpdpZxYZ/IMG.webp');"></div>
+            <div class="tv-grid-text">Alwan Sport <span>6</span></div>
+        </a>
+    </div>
+</div>
+
+<!-- ================= قنوات الكأس ================= -->
+<div id="alkass-page" class="page">
+    <div class="back-btn" onclick="navigateTo('sports-menu')">← رجوع</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث..."></div>
+    <div class="main-title-en" style="margin-bottom: 10px; text-align: center; text-shadow: 2px 2px 6px #000;">AL KASS CHANNELS</div>
+    <div class="tv-grid">
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4RTIt6v3UpTeLxXvsAzvEvXjEVNiQr4hD73X25umuEdqeZrFiSOrsW7DEQS0Ef3gnkV7trrzFgJJi6Qt5q5l8K/a/Hmg3GYMspgo+NwUENgnNhW0JgEatYJtT4ZfWmHrZRh61QV2stnZApO8vDEvfoPYB3FTqB5SgxZVsA5aQsTmT/leMxa0J7tVy6i528q6wQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 1</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4RTIt6v3UpTeLxXvsAzvEvXjEVNiQr4hD73X25umuEdqeZrFiSOrsW7DEQS0Ef3gni8/vWSjav+f7YhXi+xdSaLa/Hmg3GYMspgo+NwUENgnNhW0JgEatYJtT4ZfWmHrZRh61QV2stnZApO8vDEvfoPYB3FTqB5SgxZVsA5aQsTmT/leMxa0J7tVy6i528q6wQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 2</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4RTIt6v3UpTeLxXvsAzvEvXjEVNiQr4hD73X25umuEdqeZrFiSOrsW7DEQS0Ef3gniRDKXBoq9q9PE+iyMIfJCLa/Hmg3GYMspgo+NwUENgnNhW0JgEatYJtT4ZfWmHrZRh61QV2stnZApO8vDEvfoPYB3FTqB5SgxZVsA5aQsTmT/leMxa0J7tVy6i528q6wQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 3</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4RTIt6v3UpTeLxXvsAzvEvXjEVNiQr4hD73X25umuEdqeZrFiSOrsW7DEQS0Ef3gnvjMhGlc/Gz3KRCLZDzlLf7a/Hmg3GYMspgo+NwUENgnNhW0JgEatYJtT4ZfWmHrZRh61QV2stnZApO8vDEvfoPYB3FTqB5SgxZVsA5aQsTmT/leMxa0J7tVy6i528q6wQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 4</span></div>
+        </a>
+        <a href="#" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 5</span></div>
+        </a>
+        <a href="#" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/Y4WQ9DDL/1784364432550.webp');"></div>
+            <div class="tv-grid-text">Al Kass <span>HD 6</span></div>
+        </a>
+    </div>
+</div>
+
+<!-- ================= قنوات ثمانية الرياضية ================= -->
+<div id="thamanya-page" class="page">
+    <div class="back-btn" onclick="navigateTo('sports-menu')">← رجوع</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث..."></div>
+    <div class="main-title-en" style="margin-bottom: 10px; text-align: center; text-shadow: 2px 2px 6px #000;">THAMANYA SPORT</div>
+    <div class="tv-grid">
+        <script>
+            for(let i = 1; i <= 6; i++) {
+                document.write(`
+                    <a href="#" class="tv-grid-card">
+                        <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/xSTnhcHL/1784364616583.webp');"></div>
+                        <div class="tv-grid-text">Thamanya <span>${i}</span></div>
+                    </a>
+                `);
+            }
+        </script>
+    </div>
+</div>
+
+<!-- ================= قسم استكشافات ومغامرات ================= -->
+<div id="adventure-menu" class="page">
+    <div class="back-btn" onclick="navigateTo('home-page')">← العودة للرئيسية</div>
+    <div class="search-container"><input type="text" class="search-bar" placeholder="بحث..."></div>
+    <div class="main-title-ar" style="font-size: 1.5em; margin-bottom: 15px; text-align: center; text-shadow: 2px 2px 6px #000;">استكشافات ومغامرات</div>
+    <div class="tv-grid">
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVyyN4TvkSNQfwNT9ksjg99k8kBSOm9a2FjjqKreKVmideNhVjv9tBz8qlusl6o2FT0xBxMGu7QiM3QsMNH40LEc8OIVX877c2UG8GiHFzyblGPxJTTWQqdi4zDB9tEt9k6MzDHRXmZm18EH5oVnFGSS2EZdsvENF5mamN0LE0fBvgCKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>1</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVyeUtxMK9UkPmWDE1zC3CmLckBSOm9a2FjjqKreKVmidcgrXtCcf6S8samimQN5VpDYD8QTmKechBGjJcXwy1YBIqckVo4A6e97RSo8YPLoD+7BDiculzXOn1cJQJeZUbt2X/Xq4eWAcn5oS9hvVuLpo6t8ydIC5UMMlMWjfoObskCKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>2</span></div>
+        </a>
+        <a href="intent://video?json=ntaWMidNvJJvjze/qthrLtS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVyJLjnkrcamC3LaMYWU/O3cMkBSOm9a2FjjqKreKVmideDxTNbEAntLy2sKYsY6EHHVRon0nqtAiH3HPHQdZ3s+zVc9tydAPWNtrIzDNKKan05D1N2nKRff9d3W2LCxSe5S+xn0/2++aibOzywy2vUFehHauYuevv9IySbLkJv8XACKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>3</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVy3tU0pZKgtAf/YrCOuxoE+Qfknt+hLsXAbHXPAtXsboclvbwyBsyKHFJPOTi5qV5d7UPD6+nC9w7rZspH4hGqMqu+Rhhr0IrmUPJ9Nm47aV4WFtH1pNxQAd+NLfkHpUIMea9ylD+f6B885ZLmo9uR0oWuiWSOYxoKuvCvbrv6dE8CKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>4</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVyMvgMt1HOqKw9Q3m2VW3+5Qfknt+hLsXAbHXPAtXsboe4RobZSYImb8LP0oDadgX+VFiIwrg0qM6k/afAv0YM9OL0I+Qo0ZiBFjQKIzCEzbDiDvthrvIUGPT12Zyh9gddVvJwATnlpfM/YSURNPQcbGQEbzWaoZyRxPA7nxBzjOICKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>5</span></div>
+        </a>
+        <a href="intent://video?json=GZBaG0Skz9Tt01Gafdft4dS2AWqlIH0FnfST4GK3JTg3zW3AArWsEIjB/RIY8gRU+McupNcalIMYXWXxZSFtGiI4C+GuPNECejuSzAiMFu06g2ly/wefNd3TZ5wYOkVyToTioPREMHLSMsjBN0i2TQfknt+hLsXAbHXPAtXsbocQxb1Ay4iNpuPmSrqw5ePYjQuI1l6SmT2zsvEuBHA8ShlSQibC465NE3zJarDUuVDAxJXvIxKaUMM8gHVAqvU7f4goO+TOw2HEO6fEgP0imzYdfOhUQdx7ABmdLBX/ZjMCKa9e24dDj8/1wAkl2EImigSlHgkpoGGM3X726IRzQmEfAn8dxmdyHKyPB4Bw14RO1ik1z7hE/5xw7J3A2zEVEBamVUKjKYvW7hSWzM6CEA0drimEe9SwcoDx5+3BpPkmjOu9+9vihBZXVjamw15vG0JOuRf8sIBXvKsguAmfP3WkKEa3ipfYGjkmJ0RA1hE=#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الغابة <span>6</span></div>
+        </a>
+        
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn/Us7dpp+cGGLv9TKvjdlxgF5qKPQx2Mnd1duIc5QSUhcTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoywiOgd6ExZGcbPwTbWR98tJ/EInZeGMKedv/ljgBHiuE32dzD/heJX4a0s9BN7ZhtYkAuipHQaGBeZfr7BUxfjaTm034y0o6VablYBOpnqQATSWeBLKu90feGBYQS4TMrgN/sAuxNwgRmAPqvK1ynHzo9ykpnHx+/FbQeg+kJ7vLbszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>ألمانيا</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQnyJZbH0kwzhh7qJEVkSE3a4l+TP9YQkMhW+aJHQ8/j9Ed4dTZDY3PbpAFuJZPtmLk0cO8WenGfKSzk8Cm7LLJ4CO1V15ImMxXe9mnpi+9MhX9l4irA2j/TaROlACx7Ty4LPBKSfUUHkv2FjpHoJa88ALEF2DePzxW7R4sAO8ANwTA0VTrjVE7z7btOeNY8+aH9iR+HSux6n0GjYLObN6qe/C2kWzx34qUrnGM0hbHOcPNlgOQzVX9J0giQmClvN3POaiOI08G33eOadix84zhsmQepPb7I1SIwRynckPmR23JVhtrP55QaNnNRPlaPwO8bYLee+g+lZX8naahwLU54YD2BGJK13j5fn67DUDjRAEHpOJOGYk8PJXOWeJiGem1wds2tafeDu7hYzfYZKicRKnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>بولندا</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn3Ks6l98f8yTORHBvf75xTvnHl6Wq7ibjigO8Wcs05H5cTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoy0dzqYsewv8CRSX0UHZgj7h/EInZeGMKedv/ljgBHiuEmXXzgAiFC3xgKzVeQHiEFU1Z/QKBIBkGCHut0E82UkKNJ0mUvJXrRIB6op3ee+zfT34GJ1DOwdBTzg0n4VsuE6RZmJ6rMNENKL8fYRiG99mwl4QskX8EYYL4nCT6s/2JbszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>إيطاليا</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn+pdPx2Mj5zxPWGAR9pXL4/aB7G1bTmTQajY+hDhCdgccj9meYlVxsMF/o00K6VEuA56Xvy2qP6GbkuwL2JxZYOsrzrDR3eP2q8poKsGDfaPHx1HnC0qGQ92p/D0atHqw77RMnvMP/+39wSNUeYvPDYqkp5QcDow1J2IOc958D+CrigTfMDL0TeKnwLSNcEXWEQYyhlrhH/0cWI35+KhgJLxfqT7VuYOVR1AQ1KXret3WP0Ao1irJtcfR7W+5qGBVU4riBGfGlwVtI7jh09cu8snJ6nbLGFUKsGTM4RFGne+ykIvZDOpf9AxMDxj6dUIf3qea27CoacoGWo8epNndC0mhB7Kyld0IoYVv4OkZ07W7gV3cC78hZmUsRyqra77Db3boaoVZPAvuvHyQ7rJwTcqGcaANDtHNMqfLjWZQCSMW4d1BqFcll/IP1X7Gn7y8OskmqmjoK0QWD3pHN31aZTHKEPtxXcycTap3eQ85FpTritODnEAu8FYEDLNSKzESQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>البرتغال</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn5OOnsV2p+qBmFRKdmoxJF86BC4/jmEDiOQzDiHofxp1d4dTZDY3PbpAFuJZPtmLk0cO8WenGfKSzk8Cm7LLJ4CO1V15ImMxXe9mnpi+9MhX9l4irA2j/TaROlACx7Ty4LX+FcRgQzbCI+CD1uI0KkYLEF2DePzxW7R4sAO8ANwTK6BDbMGKfeI/Ln30Dpet2JQ3ivSnWtSoKMEpqz9RbT5wzPtQ0tk32wV4AYFRidIvHm2A2iERPQLB46qkmLkqg1Nsmedfr3RMS2RX3Q/AXoW3LqVcePO6MRYfkPfn4UETJVhtrP55QaNnNRPlaPwO8bYLee+g+lZX8naahwLU54YD2BGJK13j5fn67DUDjRAEHpOJOGYk8PJXOWeJiGem1wds2tafeDu7hYzfYZKicRKnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>سويسرا</span></div>
+        </a>
+        
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIcksnKyfMWF8weszph/gD3SK+4dDuwLKswTQ3N9jLFgchLPohWjMHykMu4M0341fBSpiayh3d35jV2fXzHYuyWi5xtAhZYpk5Kc8C3QPSdlS6r7k5HtD0yoyg5+q77o5oOiNDg0hbd/9TdjcTPAXipHjpFWbZSzhdoJecGXSr6W7rExXph2XU3psiOfu0jC7ELPqN3SjiOeVFcTtF5Yf3z+IcCnQAkkdHYQGy76cE/LfcHldR2fIcY4WunQndBFnVuyrPthwN5gkDt8bdzQU46Hp9Gae9ckPR9cF1xCLtZkXyoVgFTs+3WhBKzwg2Ojsp2VqDcHh6JYV3yyplSaoPejqgkfMJvUUZczb9qx63kdz2k0IRcIZkA1TX8cbpvgf89cfVhha5BMKUJAt3TXOCmRghzdD059mUbqqT5TfXQbTT+JfYDyNkh1BBMagQ/AjSaRYym+Xg4VecrJNEu7sddepdrm2ycdNbLVncGpyYKI0p6VVf38tfJfVwO893KQkiWA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الصحراء <span>1</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIcksnKyfMWF8weszph/gD3SLdviMr8a5Jb+UJ3libyPPZ5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIKcFUBUVB4yfLoBJ63Fi0Ad+9UPQtdX9sqB4aMnBUdzQC+TP6b8Bn7iZVNaLGQT1NNx5ikKGJGiMa2JdjeNYt1ouuCM0PENpMOvfzQTIAAywbR4BKdDISnefdHcEFpLpVYJk0uKZgEaRk3Le5tp9jbTsaZSEVRha7q5FktpFAGDz2bCNJdNIIar/cHYaSTHWRUqXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الصحراء <span>2</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIcksnKyfMWF8weszph/gD3SL/O0S8xQg+V/1qDnVXA9q/5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIOGsVrv1Y6WNDIrpKFSpcDN+9UPQtdX9sqB4aMnBUdzQnr12Jdgc4o+KiyNCtE4EXboqTuk6hLLeqtu48o1sLVmKw6tbIKtOk2TLgk9DLElhfJiTqG1VAD7FT6PdN9Vopk+j93kbcJixcNwvRZDCh2il6+FLW4wvb/j4ED1+GkVkb80dc8gU0KoZIqgn1Cxn60qXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الصحراء <span>3</span></div>
+        </a>
+        
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn5ppX4e+e9jBz5HmcU1Jact4Io3GpDzTdTubsT689ELOcTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoy9eBXovEZym0sf6e8Tq5wK5/EInZeGMKedv/ljgBHiuEdThuKL7hhFqCUaIeaDPYAm3okDNP2mS7U66zaL37/2dg84F9kvwKmyXbCv80BQW779dw4WR8snSlJbfuWfMEVKTrS5BGr3KslXFW/vl9CTSm90Sq8kdmeRsi/zk2U2vObszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>النرويج</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn66IXrfKqAg3Tf82ZAQwtwkl+TP9YQkMhW+aJHQ8/j9Ed4dTZDY3PbpAFuJZPtmLk0cO8WenGfKSzk8Cm7LLJ4CO1V15ImMxXe9mnpi+9MhX9l4irA2j/TaROlACx7Ty4C6XpDP0Zxvaebqb2RuoAtwLEF2DePzxW7R4sAO8ANwT3ecrAHXZ7rEYwyZ+wudG5p/7pFGCjEpREyJVnWYXJn1RPBJM5hjopbA1UGeoz6EHrMFL2v16b0shLRl1DqGZjrpJ3lvhr/OmC4Ra2vV4zh5jUbR3xiW5UvMRV+qJXl7FJVhtrP55QaNnNRPlaPwO8bYLee+g+lZX8naahwLU54YD2BGJK13j5fn67DUDjRAEHpOJOGYk8PJXOWeJiGem1wds2tafeDu7hYzfYZKicRKnEDY/21YgB17Ll/i7GCW+W2/j+hK+IfHF4VHnOpUcDDJd5s7UbkEBujV7H6t6y20uACLXKNN3/vGmhK3Djtdy#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>هولندا</span></div>
+        </a>
+        
+        <a href="intent://video?json=uUcD21d1B9pR9YWgb23bu4WYAtxhOQ27nMg8x36X2qknz3Yc3RwXkMeougS/GWNRcj9meYlVxsMF/o00K6VEuA56Xvy2qP6GbkuwL2JxZYOsrzrDR3eP2q8poKsGDfaPHx1HnC0qGQ92p/D0atHqw8bCmPq9N/sxweY5nF33BCkqkp5QcDow1J2IOc958D+C8/Nn9hbpeE7ewg3Jg/QBq1iGhZkydjstUKGRcgY8MEhrfs6yz2axuLtxDDdO5/kGs7/Ff1YTBDXzLksuovleNxyfx0JPhW7/SmYj15kwy9Mp2AEFbFRV/OvdZVZ9y5DZAzYux/WDgYjjekRvziuKiXqea27CoacoGWo8epNndC0mhB7Kyld0IoYVv4OkZ07W7gV3cC78hZmUsRyqra77Db3boaoVZPAvuvHyQ7rJwTcqGcaANDtHNMqfLjWZQCSMW4d1BqFcll/IP1X7Gn7y8OskmqmjoK0QWD3pHN31aZTHKEPtxXcycTap3eQ85FpTritODnEAu8FYEDLNSKzESQ==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">الكوارث المهندسة <span>1</span></div>
+        </a>
+        <a href="intent://video?json=uUcD21d1B9pR9YWgb23bu4WYAtxhOQ27nMg8x36X2qnUWqfqjHajWHcECyJ32CoVhYJApKODuvc7V7Vk3tIcFsvb2DqetA+jUkrLmSJEtNOnTjAAFn/xK0SER1YxpiRExWlsoh+2gCMHysTTeXiIs2CZlXbcuI635TqJ7CqmIcyj/kWu5qrUlbz8htRb2SYJrV/s2Gg+6b6osUjILTYp1MGqgaT7/oYrN3z2ehVKaCjTTuuiJ3an/Dt1ppGztgIyjN/iJqCSdXKPiPTJpQGfE4WSnrH2skiFnuAs7yqIfcuENPFogxAnguKvuia29lG64GADzGxNKT+HCcBvaIhLj8P+NLQOwZEahRl30QICUtPq8laEQH7DmyrLzxBk6dIWIJnc9NyZLYHoN0JoDxcos/Az7fSIRFgVC4C1+7nUJiCO4S9GUUewQ3Ur0l8yIT/4chCMnHFw9RBQCxUIYXWXZtqH0Z1i2OMIVBgKMFUW7uCcyCoW1EL8VsomNP/ehbmEh5xOQyKjMjs5CHM+J+pLRg==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">الكوارث المهندسة <span>2</span></div>
+        </a>
+        
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn1BdrpSntbRmwgV2/T0S3mr5tdiwGgcgOkQaspp1RtyScTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoy7zBLqAEJxFiBqX+EKfgeLh/EInZeGMKedv/ljgBHiuEzsm+/UiCg4lx+cIlr2KYmn8huAXqkZHk1Jbqfp4mKZxekBmXu3VlYlB5vJYPcc1mPmTxlXXKrjDYPykSf/8QexXUY2MGOOZ6S9of5PAH95qrBlFHDlLR/q3SAY8tuxzebszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>اليونان</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn2Ky1lHy6Ge27YlN37yovCGc+1znPPsiCNpZ5e+6Jyx7cTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoy2jM5IOcYxEhaveui8e5+Ad/EInZeGMKedv/ljgBHiuEZrrSBvMz+LWYr3iiogSLnHglkA4l+21sLU7pM0u/doJd5DqU1U7eqS9jBe75r8spAMqbB4J6g8Trnv49HKpx0hb3gvZox/dypk76oSBKSTQmFKBrDveOxRyhV8ZOSE21bszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>هنغاريا</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn2rCf8FgG6oQ044sTZvdya9cUPreqWWbypuUsC1HeANqcTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoyw5YZMHwiIlxFe886MsL9UB/EInZeGMKedv/ljgBHiuEwOXHt2nyms6aP/3o/vmVGjdf3+PT3VMhciLhXdOrVgUtXDtfbVcPW1iPfadxnkAbwUmy/ij0h5A/L72+0TnTgiWdiu8zifOYi9E+6oe3o3mGifYNP337/qDR6gnA6LqVbszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>كرواتيا</span></div>
+        </a>
+        <a href="intent://video?json=QWyD4wOIcBWRPiphMLzQn32Cdgoc+AOPEmLL3cnflHHb8OvR/mCXMBmh/K4uAeTEcTzOWHFGaLGQ+67LiWRi793A7Aj/P0Gd+/AxRv0iGMeK8wmU+u4SnVaje06q2X9FMTCSAqd+a1pY2gdxVaXoy+UY/pU55hnBncZlH8LILAh/EInZeGMKedv/ljgBHiuEbKjbAVHsjuF9gCoPYGCYABya4LOhwtnzRHzT+2fIc71K5/7mfk/dgeX2Z5+nEo/ce3nu/+0r7iKMX1B7PJl/yoQTIwuWN5AfwLW9FCiiCdiYFEea/X0vWQuo9toNKpfkbszsuZRkLFU/ZMJpeEDZ304jIFIIUt1x2GHFwhiWEUIBU5R5leXJ5DGvmb1Z+V98VQYko6r2a36PYHDvBAPeZJ51twWMaOxo9GCYmBe6ShHcToSDp4SBhowU5gjaGABDtEg7FcVSw4K+ofrpDK/RvQ+NQVkvdvr3yhlLBwzw8H28rBwTw7dVaR3wzZ+hMUHt#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">استكشاف <span>أيرلندا</span></div>
+        </a>
+        
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQscd9zszGKQ3wS8WDG5l1lpM5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIPVLnOAVV/7istTFguWcEPp+9UPQtdX9sqB4aMnBUdzQ8wtjMdNOWtDUiZdWCs48DKvQA1+WQyNU+cqox5cj4teEjYcDeZjXb++aypLycTqQPeK6PZkxh2OHCiBxeaqdUQYBXBLAEOH5EdYQdinu9JXaGLwMXf0NMRvnUUaBLVUm8Se09W0lFM/YCUYJbQ2Vb0qXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>1</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQsc4/m2EjgwiWLgCtpVC4V1M5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIOO/MfkfpIAG41Wt1uUWb7J+9UPQtdX9sqB4aMnBUdzQZ3XYMgXW6hMQtcxnOVTzJ6g33KT8xPwli3jr++iHKl0EBP23UKBpOqFVqC9PMGnbL5YB08j7ner6CtRvkqHonJ3ojNcyw/q23Ny0QDBmROxjnFKFHpmoQaRjKn8/WAA0tRfIQwJ7JVI1Y4CGGJgVHkqXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>2</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQseyYysRLylJVGy+rf1koda95DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fILb+VzF4SYNtkoaldDIwkiV+9UPQtdX9sqB4aMnBUdzQydGmyUp0NlFsSjFOszAHx4p41H1wkAvxZq5McZ/83rEpPG9f7phZ4Vx8WgvQN+47jvVaP9VhZdzzS7UTUGbBsfEeNRON+mHnnDd8dDHjoNiaWaOkVYpWwJP0F39FwvWRLijGDu0veYP7DRIua5tOU0qXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>3</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQseeQK8wQ0PSKad8RrUV96JO5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fILf2lXfn2pB5IQ1eSZ2LPOZ+9UPQtdX9sqB4aMnBUdzQb0bAGQFbG+qC2dMoOUAC8N16UmPKCuerGbNJAFqyzwUz88uV14VCdUwPkAsXr69llq0DgDYrwf0Fjw4JecdjVtylVgdIJRwxFubVRxktRUG1kmnAEtrnDp6KZVpl/Wnix3cMWWUt9lzuv9gaJ1H3ykqXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>4</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQsc/rzYW5UlDHFqEHT4Npk8w5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIBkcJL9GM7y6+8lBBYkNcp9+9UPQtdX9sqB4aMnBUdzQsVYaGU5cg8euL/KSkjsgUwKMq0YvA5lgI12Qu4lwDlwH/BcK2+/oYx0QaQAxvR1n5dN1nX07YA15tyHqFxedQabQnk8SaoWYnT05unngfacKSSLccuKMPq8jqh9xizkTNq8JW8RJmVkXAPnYJSn8JUqXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>5</span></div>
+        </a>
+        <a href="intent://video?json=f4Vs3PtcRwZpIqvzdHLIci1//zc9iMUxOsRUNNVtQscXjNRpzIOFQZCwSfvYVmYi5DVTJ3h5JAG0EI3FBesY04xxYhoTB4K2syExHlGBGc8WjKZ4aXNIr5FUoofJ7FheO6KPAjkweSrPuqxFTr3fIG2OpWMyU1oYyleT2cI7r1l+9UPQtdX9sqB4aMnBUdzQDKWdsA0jnD7iF8udk8wtIV748orFujMjaXcmFIaC0gOPO7uR1s8bGS/MdMRIuKhOs958LV7/Ot4S5uCvgjxf4V9BC78DYNR66O9AXuN4UoPDY0O6qMea25A6iDRK8bDbRij9uRatKVh0O6OA2Hdg+kqXuec60ZSRBapSdtLGfWaNW2vtsNIc8gSHVGAwBjblQrA0in2nGb/IDB+l5aOgCz3yowv33BJ/0TL0cQQL0MThvFGBjFkjxBlOoprtKvm7c4o33Sdj8tOLiC0Y4QBtRRd5njtUuzvzze5lqpN8RZXpBlgYakKbV0lWTDDsLttMqkPJhgmRfhItVHfd920PbA==#Intent;scheme=myapp;package=com.arix.player;end" class="tv-grid-card">
+            <div class="tv-grid-img" style="background-image: url('https://i.ibb.co/fz2cW8R8/pngtree-compass-and-map-of-the-world-symbolizing-travel-adventure-exploration-with-image-16851966.webp');"></div>
+            <div class="tv-grid-text">العيش في الجزيره <span>6</span></div>
+        </a>
+    </div>
+</div>
+
+<script>
+    // نظام التنقل بين الأقسام
+    function navigateTo(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        
+        // تفريغ حقول البحث عند التنقل وإعادة العناصر للظهور
+        document.querySelectorAll('.search-bar').forEach(bar => {
+            bar.value = '';
+            const event = new Event('input');
+            bar.dispatchEvent(event);
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // نظام البحث الدقيق بمجرد كتابة حرف
+    window.addEventListener('load', () => {
+        const searchInputs = document.querySelectorAll('.search-bar');
+        searchInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const filter = this.value.toLowerCase().trim();
+                const activePage = this.closest('.page');
+                
+                if (!activePage) return;
+                
+                // البحث داخل جميع أنواع الكروت في الصفحة المفتوحة
+                const items = activePage.querySelectorAll('.section-card, .card, .tv-grid-card, .custom-tv-card');
+                
+                items.forEach(item => {
+                    const text = item.textContent || item.innerText;
+                    if (text.toLowerCase().indexOf(filter) > -1) {
+                        item.style.display = "";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>
